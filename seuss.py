@@ -23,7 +23,7 @@ import csv
 
 
 def stripPunc(sourceFile):
-    punctuation = [ u".", u",", u":", u";", u"?", u"!", u"'", u"’", u'"', u"-", u"–", u"—" ]
+    punctuation = [ u".", u",", u":", u";", u"?", u"!", u"'", u"’", u'"', u"-", u"–", u"…", u'”', u'“', u"—" ]
     content = [line.rstrip('\n') for line in codecs.open(sourceFile, encoding='utf-8')]
     strippedText = []
     for line in content:
