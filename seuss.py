@@ -88,10 +88,11 @@ def writeWordifyToFile(wordifiedText, filename):
 
 
 def writeToCSV(dataToWrite, outputFileName):
-    with open(outputFileName, 'wb') as csvfile:
+    with codecs.open(outputFileName, mode='wb', encoding='utf-8') as csvfile:
         w = csv.writer(csvfile, delimiter=',')
         w.writerow(['position','word','tallySoFar','probSoFar','previousOccurrence','distanceSincePrevious','\n'])
         for row in dataToWrite:
+            # print row
             w.writerow(row)
     print outputFileName, 'successfully created.'
 
@@ -102,8 +103,8 @@ def writeToCSV(dataToWrite, outputFileName):
 wordCount = {}
 previousOccurrence = {}
 
-sourceFile = 'peterRabbit.txt'
-outputWordifiedFile = 'peterRabbitWordified.txt'
-outputAnalysisFile = 'peterRabbitAnalysis.csv'
+sourceFile = 'SOTU2016.txt'
+outputWordifiedFile = 'SOTU2016Wordified.txt'
+outputAnalysisFile = 'SOTU2016Analysis.csv'
 writeWordifyToFile(wordify(stripPunc(sourceFile)), outputWordifiedFile)
 writeToCSV(analyzeWholeText(wordify(stripPunc(sourceFile))), outputAnalysisFile)
