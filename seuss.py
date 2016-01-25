@@ -41,7 +41,8 @@ def wordify(textAsList):
     for line in textAsList:
         wordList = line.split()
         for word in wordList:
-            wordifiedText.append(word.lower())
+            wordLower = word.lower()
+            wordifiedText.append(wordLower)
     return wordifiedText
 
 
@@ -70,13 +71,15 @@ def analyzeWord(word, wordPosition):
 
     return wordInfo
 
-def analyzeWholeText(wordifiedText):
+def analyzeWholeText(wordifiedText, outputFileName):
     textAnalysis = []
     wordPosition = 1
-    for word in wordifiedText:
-        textAnalysis.append(analyzeWord(word, wordPosition))
-        wordPosition += 1
-    return textAnalysis
+    with codecs.open(outputFileName, mode='wb', encoding='utf-8') as csvfile:
+        w = csv.writer(csvfile, delimiter=',')
+        w.writerow(['position','word','tallySoFar','probSoFar','previousOccurrence','distanceSincePrevious','\n'])
+        for word in wordifiedText:
+            w.writerow(analyzeWord(word, wordPosition))
+            wordPosition += 1
 
 
 def writeWordifyToFile(wordifiedText, filename):
@@ -84,27 +87,17 @@ def writeWordifyToFile(wordifiedText, filename):
     for line in wordifiedText:
         f.write(line + '\n')
     f.close()
-    print filename, 'successfully created.'
+    print(filename, 'successfully created.')
 
-
-def writeToCSV(dataToWrite, outputFileName):
-    with codecs.open(outputFileName, mode='wb', encoding='utf-8') as csvfile:
-        w = csv.writer(csvfile, delimiter=',')
-        w.writerow(['position','word','tallySoFar','probSoFar','previousOccurrence','distanceSincePrevious','\n'])
-        for row in dataToWrite:
-            print row
-            w.writerow(row)
-    print outputFileName, 'successfully created.'
-
-    
+  
 # run
 
 
 wordCount = {}
 previousOccurrence = {}
 
-sourceFile = 'twitterArchive.txt'
-outputWordifiedFile = 'twitterArchiveWordified.txt'
-outputAnalysisFile = 'twitterArchiveAnalysis.csv'
-writeWordifyToFile(wordify(stripPunc(sourceFile)), outputWordifiedFile)
-writeToCSV(analyzeWholeText(wordify(stripPunc(sourceFile))), outputAnalysisFile)
+sourceFile = '../twitterArchive.txt'
+outputWordifiedFile = '../twitterArchiveWordified.txt'
+outputAnalysisFile = '../twitterArchiveAnalysis.csv'
+# writeWordifyToFile(wordify(stripPunc(sourceFile)), outputWordifiedFile)
+analyzeWholeText(wordify(stripPunc(sourceFile)), outputAnalysisFile)
